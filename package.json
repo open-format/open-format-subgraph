@@ -1,0 +1,16 @@
+{
+  "name": "open-format",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ simpleweb/open-format",
+    "create-local": "graph create --node http://localhost:8020/ simpleweb/open-format",
+    "remove-local": "graph remove --node http://localhost:8020/ simpleweb/open-format",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 simpleweb/open-format"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.25.1",
+    "@graphprotocol/graph-ts": "0.24.1"
+  }
+}
