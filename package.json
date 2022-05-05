@@ -3,7 +3,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "deploy:mumbai": "graph deploy --node https://api.thegraph.com/deploy/ simpleweb/open-format subgraph.mumbai.yaml",
-    "deploy:polygon": "graph deploy --node https://api.thegraph.com/deploy/ simpleweb/open-format subgraph.polygon.yaml",
+    "deploy:polygon": "graph deploy --node https://api.thegraph.com/deploy/ simpleweb/polygon-open-format subgraph.polygon.yaml",
     "gen:mumbai": "graph codegen subgraph.mumbai.yaml",
     "gen:polygon": "graph codegen subgraph.polygon.yaml",
     "build": "graph build",
