@@ -93,10 +93,7 @@ export function handleApproval(event: Approval): void {
 export function handleApprovedDepositExtensionSet(
   event: ApprovedDepositExtensionSet
 ): void {
-  const extensionID =
-    event.address.toHex() +
-    "-" +
-    event.params.contractAddress.toHex();
+  const extensionID = event.address.toHex();
 
   let token = Token.load(event.address.toHex());
   let extensionData = ExtensionData.load(extensionID);
@@ -119,10 +116,7 @@ export function handleApprovedRoyaltyExtensionCustomPctSet(
 export function handleApprovedRoyaltyExtensionSet(
   event: ApprovedRoyaltyExtensionSet
 ): void {
-  const extensionID =
-    event.address.toHex() +
-    "-" +
-    event.params.contractAddress.toHex();
+  const extensionID = event.address.toHex();
 
   let token = Token.load(event.address.toHex());
   let extensionData = ExtensionData.load(extensionID);
