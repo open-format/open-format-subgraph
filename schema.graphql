@@ -1,6 +1,69 @@
-type ExampleEntity @entity {
+type Token @entity {
   id: ID!
-  count: BigInt!
-  owner: Bytes! # address
-  approved: Bytes! # address
+  properties: [Property!]
+  factory_id: String
+  release_type: String
+  saleData: SaleData
+  attributes: [Attribute!]
+  creator: Creator!
+  stakeholders: [Stakeholder!] @derivedFrom(field: "token")
+  payouts: [Payout!] @derivedFrom(field: "token")
+  owners: [OwnerToken!] @derivedFrom(field: "token")
+  symbol: String!
+  createdAt: BigInt!
+}
+
+type Creator @entity {
+  id: ID!
+}
+
+type Stakeholder @entity {
+  id: ID!
+  share: BigInt!
+  token: Token!
+  balance: BigInt!
+}
+
+type Payout @entity {
+  id: ID!
+  account: String!
+  amount: BigInt!
+  token: Token!
+  createdAt: BigInt!
+  transactionHash: Bytes!
+}
+
+type Owner @entity {
+  id: ID!
+  tokens: [OwnerToken!]! @derivedFrom(field: "owner")
+}
+
+type OwnerToken @entity {
+  id: ID!
+  owner: Owner!
+  token: Token!
+}
+
+type Attribute @entity {
+  id: ID!
+  trait_type: String!
+  value: String!
+}
+
+type Property @entity {
+  id: ID!
+  key: String!
+  value: String!
+  tokens: [Token!]! @derivedFrom(field: "properties")
+}
+
+type SaleData @entity {
+  id: ID!
+  maxSupply: BigInt!
+  totalEarnings: BigInt!
+  totalSold: BigInt!
+  totalReleased: BigInt!
+  salePrice: BigInt!
+  createdAt: BigInt!
+  royaltiesPercentage: BigInt!
 }
