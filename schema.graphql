@@ -16,7 +16,7 @@ type Token @entity {
 
 type Creator @entity {
   id: ID!
-  tokens: [Tokens]! @derivedFrom(field: "creator")
+  tokens: [Token!]! @derivedFrom(field: "creator")
 }
 
 type Stakeholder @entity {

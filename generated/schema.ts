@@ -259,6 +259,15 @@ export class Creator extends Entity {
   set id(value: string) {
     this.set("id", Value.fromString(value));
   }
+
+  get tokens(): Array<string> {
+    let value = this.get("tokens");
+    return value!.toStringArray();
+  }
+
+  set tokens(value: Array<string>) {
+    this.set("tokens", Value.fromStringArray(value));
+  }
 }
 
 export class Stakeholder extends Entity {
@@ -750,9 +759,6 @@ export class ExtensionData extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("approvedDepositExtension", Value.fromString(""));
-    this.set("approvedRoyaltyExtension", Value.fromString(""));
   }
 
   save(): void {
@@ -781,21 +787,37 @@ export class ExtensionData extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get approvedDepositExtension(): string {
+  get approvedDepositExtension(): string | null {
     let value = this.get("approvedDepositExtension");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set approvedDepositExtension(value: string) {
-    this.set("approvedDepositExtension", Value.fromString(value));
+  set approvedDepositExtension(value: string | null) {
+    if (!value) {
+      this.unset("approvedDepositExtension");
+    } else {
+      this.set("approvedDepositExtension", Value.fromString(<string>value));
+    }
   }
 
-  get approvedRoyaltyExtension(): string {
+  get approvedRoyaltyExtension(): string | null {
     let value = this.get("approvedRoyaltyExtension");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set approvedRoyaltyExtension(value: string) {
-    this.set("approvedRoyaltyExtension", Value.fromString(value));
+  set approvedRoyaltyExtension(value: string | null) {
+    if (!value) {
+      this.unset("approvedRoyaltyExtension");
+    } else {
+      this.set("approvedRoyaltyExtension", Value.fromString(<string>value));
+    }
   }
 }
