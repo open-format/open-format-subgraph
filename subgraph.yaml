@@ -1,4 +1,4 @@
-specVersion: 0.0.1
+specVersion: 0.0.2
 schema:
   file: ./schema.graphql
 dataSources:
@@ -6,15 +6,12 @@ dataSources:
     name: OpenFormat
     network: mumbai
     source:
-      address: "0xa674eba71e7c90933b70ea26ead631a20fba6925"
       abi: OpenFormat
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - Approval
-        - ApprovalForAll
         - ApprovedDepositExtensionSet
         - ApprovedRoyaltyExtensionCustomPctSet
         - ApprovedRoyaltyExtensionSet
@@ -45,10 +42,6 @@ dataSources:
         - name: OpenFormat
           file: ./abis/OpenFormat.json
       eventHandlers:
-        - event: Approval(indexed address,indexed address,indexed uint256)
-          handler: handleApproval
-        - event: ApprovalForAll(indexed address,indexed address,bool)
-          handler: handleApprovalForAll
         - event: ApprovedDepositExtensionSet(indexed address)
           handler: handleApprovedDepositExtensionSet
         - event: ApprovedRoyaltyExtensionCustomPctSet(indexed uint256)
