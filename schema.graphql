@@ -16,6 +16,7 @@ type Token @entity {
 
 type Creator @entity {
   id: ID!
+  tokens: [Tokens]! @derivedFrom(field: "creator")
 }
 
 type Stakeholder @entity {
@@ -73,6 +74,6 @@ type SaleData @entity {
 
 type ExtensionData @entity {
   id: ID!
-  approvedDepositExtension: String!
-  approvedRoyaltyExtension: String!
+  approvedDepositExtension: String
+  approvedRoyaltyExtension: String
 }
