@@ -1,0 +1,98 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: OpenFormat
+    network: matic
+    source:
+      abi: OpenFormat
+      startBlock: 27951321
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - ApprovedDepositExtensionSet
+        - ApprovedRoyaltyExtensionCustomPctSet
+        - ApprovedRoyaltyExtensionSet
+        - CommissionPaid
+        - Created
+        - ERC20PaymentReleased
+        - ERC20TokenBalanceWithdrawn
+        - ERC20TotalDepositedAmountUpdated
+        - MaxSupplySet
+        - Minted
+        - MintingPriceSet
+        - OwnershipTransferred
+        - PausedStateSet
+        - PayeeAdded
+        - PayeeRemoved
+        - PaymentReceived
+        - PaymentReleased
+        - PrimaryCommissionSet
+        - RoyaltiesSet
+        - RoyaltyPaid
+        - SalePriceSet
+        - SecondaryCommissionSet
+        - Sold
+        - TokenBalanceWithdrawn
+        - TotalDepositedAmountUpdated
+        - Transfer
+      abis:
+        - name: OpenFormat
+          file: ./abis/OpenFormat.json
+      eventHandlers:
+        - event: ApprovedDepositExtensionSet(indexed address)
+          handler: handleApprovedDepositExtensionSet
+        - event: ApprovedRoyaltyExtensionCustomPctSet(indexed uint256)
+          handler: handleApprovedRoyaltyExtensionCustomPctSet
+        - event: ApprovedRoyaltyExtensionSet(indexed address)
+          handler: handleApprovedRoyaltyExtensionSet
+        - event: CommissionPaid(indexed string,indexed address,uint256,uint256)
+          handler: handleCommissionPaid
+        - event: Created(indexed address,string,string,string,uint256,uint256,uint256)
+          handler: handleCreated
+        - event: ERC20PaymentReleased(indexed address,address,uint256)
+          handler: handleERC20PaymentReleased
+        - event: ERC20TokenBalanceWithdrawn(address,indexed uint256,indexed uint256)
+          handler: handleERC20TokenBalanceWithdrawn
+        - event: ERC20TotalDepositedAmountUpdated(indexed address,indexed uint256)
+          handler: handleERC20TotalDepositedAmountUpdated
+        - event: MaxSupplySet(indexed uint256)
+          handler: handleMaxSupplySet
+        - event: Minted(indexed uint256,indexed address)
+          handler: handleMinted
+        - event: MintingPriceSet(indexed uint256)
+          handler: handleMintingPriceSet
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PausedStateSet(bool)
+          handler: handlePausedStateSet
+        - event: PayeeAdded(address,uint256)
+          handler: handlePayeeAdded
+        - event: PayeeRemoved(address,uint256)
+          handler: handlePayeeRemoved
+        - event: PaymentReceived(address,uint256)
+          handler: handlePaymentReceived
+        - event: PaymentReleased(address,uint256)
+          handler: handlePaymentReleased
+        - event: PrimaryCommissionSet(indexed uint256)
+          handler: handlePrimaryCommissionSet
+        - event: RoyaltiesSet(indexed address,indexed uint256)
+          handler: handleRoyaltiesSet
+        - event: RoyaltyPaid(indexed address,indexed uint256)
+          handler: handleRoyaltyPaid
+        - event: SalePriceSet(indexed uint256,uint256)
+          handler: handleSalePriceSet
+        - event: SecondaryCommissionSet(indexed uint256)
+          handler: handleSecondaryCommissionSet
+        - event: Sold(indexed uint256,indexed address,indexed address,uint256)
+          handler: handleSold
+        - event: TokenBalanceWithdrawn(indexed uint256,indexed uint256)
+          handler: handleTokenBalanceWithdrawn
+        - event: TotalDepositedAmountUpdated(indexed uint256)
+          handler: handleTotalDepositedAmountUpdated
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mappings/mapping-v1.1.0.ts
