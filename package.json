@@ -2,9 +2,11 @@
   "name": "open-format",
   "license": "UNLICENSED",
   "scripts": {
-    "codegen": "graph codegen",
+    "deploy:mumbai": "graph deploy --node https://api.thegraph.com/deploy/ simpleweb/open-format subgraph.mumbai.yaml",
+    "deploy:polygon": "graph deploy --node https://api.thegraph.com/deploy/ simpleweb/open-format subgraph.polygon.yaml",
+    "gen:mumbai": "graph codegen subgraph.mumbai.yaml",
+    "gen:polygon": "graph codegen subgraph.polygon.yaml",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ simpleweb/open-format",
     "create-local": "graph create --node http://localhost:8020/ simpleweb/open-format",
     "remove-local": "graph remove --node http://localhost:8020/ simpleweb/open-format",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 simpleweb/open-format"
