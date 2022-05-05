@@ -4,6 +4,7 @@ type Token @entity {
   factory_id: String
   release_type: String
   saleData: SaleData
+  ExtensionData: ExtensionData
   attributes: [Attribute!]
   creator: Creator!
   stakeholders: [Stakeholder!] @derivedFrom(field: "token")
@@ -15,6 +16,7 @@ type Token @entity {
 
 type Creator @entity {
   id: ID!
+  tokens: [Tokens]! @derivedFrom(field: "creator")
 }
 
 type Stakeholder @entity {
@@ -66,4 +68,12 @@ type SaleData @entity {
   salePrice: BigInt!
   createdAt: BigInt!
   royaltiesPercentage: BigInt!
+  primaryCommission: BigInt!
+  secondaryCommission: BigInt!
+}
+
+type ExtensionData @entity {
+  id: ID!
+  approvedDepositExtension: String
+  approvedRoyaltyExtension: String
 }
