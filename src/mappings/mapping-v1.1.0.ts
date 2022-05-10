@@ -152,7 +152,6 @@ export function handleCreated(event: Created): void {
     saleData.salePrice = event.params.mintingPrice;
     saleData.createdAt = event.block.timestamp;
     saleData.maxSupply = event.params.maxSupply;
-    saleData.royaltiesPercentage = event.params.royaltiesPct;
   }
 
   const jsonData: Wrapped<JSONValue> | null = parseJsonFromIpfs(
@@ -165,9 +164,7 @@ export function handleCreated(event: Created): void {
     const parsedMetadata = jsonData.inner.toObject();
 
     if (getStringValue(parsedMetadata, "factory_id") != null) {
-      token.factory_id =
-        getStringValue(parsedMetadata, "factory_id") +
-        event.address.toHex();
+      token.factory_id = getStringValue(parsedMetadata, "factory_id");
     }
 
     if (getStringValue(parsedMetadata, "factory_id") != null) {

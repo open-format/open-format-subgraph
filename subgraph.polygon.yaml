@@ -7,7 +7,7 @@ dataSources:
     network: matic
     source:
       abi: OpenFormat
-      startBlock: 27951321
+      startBlock: 28151009
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -51,7 +51,7 @@ dataSources:
           handler: handleApprovedRoyaltyExtensionSet
         - event: CommissionPaid(indexed string,indexed address,uint256,uint256)
           handler: handleCommissionPaid
-        - event: Created(indexed address,string,string,string,uint256,uint256,uint256)
+        - event: Created(indexed address,string,string,string,uint256,uint256)
           handler: handleCreated
         - event: ERC20PaymentReleased(indexed address,address,uint256)
           handler: handleERC20PaymentReleased

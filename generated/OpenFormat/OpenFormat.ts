@@ -182,10 +182,6 @@ export class Created__Params {
   get mintingPrice(): BigInt {
     return this._event.parameters[5].value.toBigInt();
   }
-
-  get royaltiesPct(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
-  }
 }
 
 export class ERC20PaymentReleased extends ethereum.Event {
@@ -815,6 +811,21 @@ export class OpenFormat extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  getMaxSupply(): BigInt {
+    let result = super.call("getMaxSupply", "getMaxSupply():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_getMaxSupply(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("getMaxSupply", "getMaxSupply():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   getPrimaryCommissionPct(): BigInt {
     let result = super.call(
       "getPrimaryCommissionPct",
@@ -861,6 +872,77 @@ export class OpenFormat extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  getSingleTokenBalance(caller: Address, tokenId: BigInt): BigInt {
+    let result = super.call(
+      "getSingleTokenBalance",
+      "getSingleTokenBalance(address,uint256):(uint256)",
+      [
+        ethereum.Value.fromAddress(caller),
+        ethereum.Value.fromUnsignedBigInt(tokenId)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getSingleTokenBalance(
+    caller: Address,
+    tokenId: BigInt
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getSingleTokenBalance",
+      "getSingleTokenBalance(address,uint256):(uint256)",
+      [
+        ethereum.Value.fromAddress(caller),
+        ethereum.Value.fromUnsignedBigInt(tokenId)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getSingleTokenBalance1(
+    token: Address,
+    caller: Address,
+    tokenId: BigInt
+  ): BigInt {
+    let result = super.call(
+      "getSingleTokenBalance",
+      "getSingleTokenBalance(address,address,uint256):(uint256)",
+      [
+        ethereum.Value.fromAddress(token),
+        ethereum.Value.fromAddress(caller),
+        ethereum.Value.fromUnsignedBigInt(tokenId)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getSingleTokenBalance1(
+    token: Address,
+    caller: Address,
+    tokenId: BigInt
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getSingleTokenBalance",
+      "getSingleTokenBalance(address,address,uint256):(uint256)",
+      [
+        ethereum.Value.fromAddress(token),
+        ethereum.Value.fromAddress(caller),
+        ethereum.Value.fromUnsignedBigInt(tokenId)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   getTokenSalePrice(tokenId: BigInt): BigInt {
     let result = super.call(
       "getTokenSalePrice",
@@ -876,6 +958,25 @@ export class OpenFormat extends ethereum.SmartContract {
       "getTokenSalePrice",
       "getTokenSalePrice(uint256):(uint256)",
       [ethereum.Value.fromUnsignedBigInt(tokenId)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getTotalSupply(): BigInt {
+    let result = super.call("getTotalSupply", "getTotalSupply():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_getTotalSupply(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getTotalSupply",
+      "getTotalSupply():(uint256)",
+      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -908,21 +1009,6 @@ export class OpenFormat extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  maxSupply(): BigInt {
-    let result = super.call("maxSupply", "maxSupply():(uint256)", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_maxSupply(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("maxSupply", "maxSupply():(uint256)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   metadataURI(): string {
@@ -1433,10 +1519,6 @@ export class ConstructorCall__Inputs {
 
   get mintingPrice_(): BigInt {
     return this._call.inputValues[4].value.toBigInt();
-  }
-
-  get royaltiesPercentage_(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
   }
 }
 
