@@ -781,11 +781,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "contractAddress",
-          "type": "address"
-        },
-        {
           "internalType": "contract IERC20",
           "name": "token",
           "type": "address"
@@ -802,13 +797,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "contractAddress",
-          "type": "address"
-        }
-      ],
+      "inputs": [],
       "name": "deposit",
       "outputs": [],
       "stateMutability": "payable",
@@ -1678,16 +1667,6 @@
     {
       "inputs": [
         {
-          "internalType": "contract IERC20",
-          "name": "token",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "contractAddress",
-          "type": "address"
-        },
-        {
           "internalType": "uint256",
           "name": "tokenId",
           "type": "uint256"
@@ -1707,8 +1686,8 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "contractAddress",
+          "internalType": "contract IERC20",
+          "name": "token",
           "type": "address"
         },
         {

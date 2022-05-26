@@ -1717,16 +1717,12 @@ export class DepositCall__Inputs {
     this._call = call;
   }
 
-  get contractAddress(): Address {
+  get token(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get token(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
   get amount(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 }
 
@@ -1753,10 +1749,6 @@ export class Deposit1Call__Inputs {
 
   constructor(call: Deposit1Call) {
     this._call = call;
-  }
-
-  get contractAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
   }
 }
 
@@ -2425,16 +2417,8 @@ export class WithdrawCall__Inputs {
     this._call = call;
   }
 
-  get token(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get contractAddress(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
   get tokenId(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[0].value.toBigInt();
   }
 }
 
@@ -2467,7 +2451,7 @@ export class Withdraw1Call__Inputs {
     this._call = call;
   }
 
-  get contractAddress(): Address {
+  get token(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 

@@ -7,7 +7,7 @@ dataSources:
     network: matic
     source:
       abi: OpenFormat
-      startBlock: 28151009
+      startBlock: 28262836
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
