@@ -7,14 +7,13 @@ dataSources:
     network: mumbai
     source:
       abi: OpenFormat
-      startBlock: 26305030
+      startBlock: 26473801
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - ApprovedDepositExtensionSet
-        - ApprovedRoyaltyExtensionCustomPctSet
         - ApprovedRoyaltyExtensionSet
         - CommissionPaid
         - Created
@@ -35,6 +34,7 @@ dataSources:
         - RoyaltyPaid
         - SalePriceSet
         - SecondaryCommissionSet
+        - SharesAllocated
         - Sold
         - TokenBalanceWithdrawn
         - TotalDepositedAmountUpdated
@@ -45,8 +45,6 @@ dataSources:
       eventHandlers:
         - event: ApprovedDepositExtensionSet(indexed address)
           handler: handleApprovedDepositExtensionSet
-        - event: ApprovedRoyaltyExtensionCustomPctSet(indexed uint256)
-          handler: handleApprovedRoyaltyExtensionCustomPctSet
         - event: ApprovedRoyaltyExtensionSet(indexed address)
           handler: handleApprovedRoyaltyExtensionSet
         - event: CommissionPaid(indexed string,indexed address,uint256,uint256)
@@ -87,6 +85,8 @@ dataSources:
           handler: handleSalePriceSet
         - event: SecondaryCommissionSet(indexed uint256)
           handler: handleSecondaryCommissionSet
+        - event: SharesAllocated(address,address,uint256)
+          handler: handleSharesAllocated
         - event: Sold(indexed uint256,indexed address,indexed address,uint256)
           handler: handleSold
         - event: TokenBalanceWithdrawn(indexed uint256,indexed uint256)
@@ -95,37 +95,4 @@ dataSources:
           handler: handleTotalDepositedAmountUpdated
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      file: ./src/mappings/mapping-v1.1.0.ts
-  # - kind: ethereum
-  #   name: TheFactory
-  #   network: mumbai
-  #   source:
-  #     abi: MusicFactory
-  #     startBlock: 26080000
-  #   mapping:
-  #     kind: ethereum/events
-  #     apiVersion: 0.0.5
-  #     language: wasm/assemblyscript
-  #     entities:
-  #       - Stakeholder
-  #       - Creator
-  #       - Payout
-  #       - Owner
-  #       - Media
-  #       - Metadata
-  #       - SaleData
-  #     abis:
-  #       - name: MusicFactory
-  #         file: ./abis/MusicFactory.json
-  #     eventHandlers:
-  #       - event: ReleaseCreated(indexed address,indexed uint256,uint256,string,uint256,string,string)
-  #         handler: handleReleaseCreated
-  #       - event: PayeeAdded(address,uint256)
-  #         handler: handlePayeeAdded
-  #       - event: ReleaseSold(indexed uint256,indexed address,indexed address,uint256)
-  #         handler: handleReleaseSold
-  #       - event: PaymentReleased(address,uint256)
-  #         handler: handlePaymentReleased
-  #       - event: ReleaseMinted(indexed uint256,indexed address,indexed address)
-  #         handler: handleReleaseMinted
-  #     file: ./src/mappings/mapping-v1.0.0.ts
+      file: ./src/mappings/mapping-v1.3.0.ts
