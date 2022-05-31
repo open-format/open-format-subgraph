@@ -102,12 +102,12 @@
       "inputs": [
         {
           "indexed": true,
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
+          "internalType": "address",
+          "name": "contractAddresss",
+          "type": "address"
         }
       ],
-      "name": "ApprovedRoyaltyExtensionCustomPctSet",
+      "name": "ApprovedMintingExtensionSet",
       "type": "event"
     },
     {
@@ -506,6 +506,44 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "state",
+          "type": "bool"
+        }
+      ],
+      "name": "ShareIncomeWithHoldersSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "SharesAllocated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": true,
           "internalType": "uint256",
           "name": "tokenId",
@@ -660,7 +698,7 @@
     },
     {
       "inputs": [],
-      "name": "approvedRoyaltyExtension",
+      "name": "approvedMintingExtension",
       "outputs": [
         {
           "internalType": "address",
@@ -747,19 +785,6 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "contractCreator",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -837,6 +862,19 @@
     },
     {
       "inputs": [],
+      "name": "getOwner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "getPrimaryCommissionPct",
       "outputs": [
         {
@@ -864,11 +902,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "caller",
-          "type": "address"
-        },
-        {
           "internalType": "uint256",
           "name": "tokenId",
           "type": "uint256"
@@ -878,7 +911,7 @@
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "tokenBalance",
           "type": "uint256"
         }
       ],
@@ -893,11 +926,6 @@
           "type": "address"
         },
         {
-          "internalType": "address",
-          "name": "caller",
-          "type": "address"
-        },
-        {
           "internalType": "uint256",
           "name": "tokenId",
           "type": "uint256"
@@ -907,7 +935,7 @@
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "tokenBalance",
           "type": "uint256"
         }
       ],
@@ -1314,8 +1342,13 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "contractAddress_",
+          "name": "contractAddress",
           "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "holderPct",
+          "type": "uint256"
         }
       ],
       "name": "setApprovedDepositExtension",
@@ -1327,11 +1360,11 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "contractAddress_",
+          "name": "contractAddress",
           "type": "address"
         }
       ],
-      "name": "setApprovedRoyaltyExtension",
+      "name": "setApprovedMintingExtension",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1340,20 +1373,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "amount_",
-          "type": "uint256"
-        }
-      ],
-      "name": "setApprovedRoyaltyExtensionCustomPct",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_amount",
+          "name": "amount",
           "type": "uint256"
         }
       ],
@@ -1366,7 +1386,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_amount",
+          "name": "amount",
           "type": "uint256"
         }
       ],
@@ -1379,7 +1399,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "amount_",
+          "name": "amount",
           "type": "uint256"
         }
       ],
@@ -1397,7 +1417,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "_royaltiesPct",
+          "name": "royaltiesPct",
           "type": "uint256"
         }
       ],
@@ -1410,11 +1430,24 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "amount_",
+          "name": "amount",
           "type": "uint256"
         }
       ],
       "name": "setSecondaryCommissionPct",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "state",
+          "type": "bool"
+        }
+      ],
+      "name": "setShareIncomeWithHolders",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1428,13 +1461,26 @@
         },
         {
           "internalType": "uint256",
-          "name": "_salePrice",
+          "name": "salePrice",
           "type": "uint256"
         }
       ],
       "name": "setTokenSalePrice",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "shareIncomeWithHolders",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -1711,5 +1757,7 @@
       "stateMutability": "payable",
       "type": "receive"
     }
-  ]
+  ],
+  "linkReferences": {},
+  "deployedLinkReferences": {}
 }
