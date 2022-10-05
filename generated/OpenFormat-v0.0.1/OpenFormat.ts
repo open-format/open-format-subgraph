@@ -98,36 +98,6 @@ export class ApprovedMintingExtensionSet__Params {
   }
 }
 
-export class ApprovedRevShareExtensionSet extends ethereum.Event {
-  get params(): ApprovedRevShareExtensionSet__Params {
-    return new ApprovedRevShareExtensionSet__Params(this);
-  }
-}
-
-export class ApprovedRevShareExtensionSet__Params {
-  _event: ApprovedRevShareExtensionSet;
-
-  constructor(event: ApprovedRevShareExtensionSet) {
-    this._event = event;
-  }
-
-  get approvedRevShareExtension(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get collaborators(): Array<Address> {
-    return this._event.parameters[1].value.toAddressArray();
-  }
-
-  get percentages(): Array<BigInt> {
-    return this._event.parameters[2].value.toBigIntArray();
-  }
-
-  get holderPct(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-}
-
 export class ApprovedRoyaltyExtensionSet extends ethereum.Event {
   get params(): ApprovedRoyaltyExtensionSet__Params {
     return new ApprovedRoyaltyExtensionSet__Params(this);
@@ -143,28 +113,6 @@ export class ApprovedRoyaltyExtensionSet__Params {
 
   get contractAddress(): Address {
     return this._event.parameters[0].value.toAddress();
-  }
-}
-
-export class CollaboratorBalanceWithdrawn extends ethereum.Event {
-  get params(): CollaboratorBalanceWithdrawn__Params {
-    return new CollaboratorBalanceWithdrawn__Params(this);
-  }
-}
-
-export class CollaboratorBalanceWithdrawn__Params {
-  _event: CollaboratorBalanceWithdrawn;
-
-  constructor(event: CollaboratorBalanceWithdrawn) {
-    this._event = event;
-  }
-
-  get collaborator(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get amount(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -233,6 +181,32 @@ export class Created__Params {
 
   get mintingPrice(): BigInt {
     return this._event.parameters[5].value.toBigInt();
+  }
+}
+
+export class ERC20PaymentReleased extends ethereum.Event {
+  get params(): ERC20PaymentReleased__Params {
+    return new ERC20PaymentReleased__Params(this);
+  }
+}
+
+export class ERC20PaymentReleased__Params {
+  _event: ERC20PaymentReleased;
+
+  constructor(event: ERC20PaymentReleased) {
+    this._event = event;
+  }
+
+  get token(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get to(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -382,6 +356,50 @@ export class PausedStateSet__Params {
   }
 }
 
+export class PayeeAdded extends ethereum.Event {
+  get params(): PayeeAdded__Params {
+    return new PayeeAdded__Params(this);
+  }
+}
+
+export class PayeeAdded__Params {
+  _event: PayeeAdded;
+
+  constructor(event: PayeeAdded) {
+    this._event = event;
+  }
+
+  get account(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get shares(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class PayeeRemoved extends ethereum.Event {
+  get params(): PayeeRemoved__Params {
+    return new PayeeRemoved__Params(this);
+  }
+}
+
+export class PayeeRemoved__Params {
+  _event: PayeeRemoved;
+
+  constructor(event: PayeeRemoved) {
+    this._event = event;
+  }
+
+  get account(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get shares(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
 export class PaymentReceived extends ethereum.Event {
   get params(): PaymentReceived__Params {
     return new PaymentReceived__Params(this);
@@ -395,11 +413,33 @@ export class PaymentReceived__Params {
     this._event = event;
   }
 
-  get sender(): Address {
+  get from(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get value(): BigInt {
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class PaymentReleased extends ethereum.Event {
+  get params(): PaymentReleased__Params {
+    return new PaymentReleased__Params(this);
+  }
+}
+
+export class PaymentReleased__Params {
+  _event: PaymentReleased;
+
+  constructor(event: PaymentReleased) {
+    this._event = event;
+  }
+
+  get to(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
 }
@@ -537,12 +577,16 @@ export class SharesAllocated__Params {
     this._event = event;
   }
 
-  get accounts(): Array<Address> {
-    return this._event.parameters[0].value.toAddressArray();
+  get from(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 
-  get shares(): Array<BigInt> {
-    return this._event.parameters[1].value.toBigIntArray();
+  get to(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -664,6 +708,48 @@ export class OpenFormat extends ethereum.SmartContract {
     return new OpenFormat("OpenFormat", address);
   }
 
+  _shares(param0: Address): BigInt {
+    let result = super.call("_shares", "_shares(address):(uint256)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try__shares(param0: Address): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("_shares", "_shares(address):(uint256)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  approvedDepositExtension(): Address {
+    let result = super.call(
+      "approvedDepositExtension",
+      "approvedDepositExtension():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_approvedDepositExtension(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "approvedDepositExtension",
+      "approvedDepositExtension():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   approvedMintingExtension(): Address {
     let result = super.call(
       "approvedMintingExtension",
@@ -678,29 +764,6 @@ export class OpenFormat extends ethereum.SmartContract {
     let result = super.tryCall(
       "approvedMintingExtension",
       "approvedMintingExtension():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  approvedRevShareExtension(): Address {
-    let result = super.call(
-      "approvedRevShareExtension",
-      "approvedRevShareExtension():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_approvedRevShareExtension(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "approvedRevShareExtension",
-      "approvedRevShareExtension():(address)",
       []
     );
     if (result.reverted) {
@@ -845,31 +908,6 @@ export class OpenFormat extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  getSingleCollaboratorBalance(collaborator: Address): BigInt {
-    let result = super.call(
-      "getSingleCollaboratorBalance",
-      "getSingleCollaboratorBalance(address):(uint256)",
-      [ethereum.Value.fromAddress(collaborator)]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_getSingleCollaboratorBalance(
-    collaborator: Address
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "getSingleCollaboratorBalance",
-      "getSingleCollaboratorBalance(address):(uint256)",
-      [ethereum.Value.fromAddress(collaborator)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   getSingleTokenBalance(tokenId: BigInt): BigInt {
     let result = super.call(
       "getSingleTokenBalance",
@@ -885,6 +923,38 @@ export class OpenFormat extends ethereum.SmartContract {
       "getSingleTokenBalance",
       "getSingleTokenBalance(uint256):(uint256)",
       [ethereum.Value.fromUnsignedBigInt(tokenId)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getSingleTokenBalance1(token: Address, tokenId: BigInt): BigInt {
+    let result = super.call(
+      "getSingleTokenBalance",
+      "getSingleTokenBalance(address,uint256):(uint256)",
+      [
+        ethereum.Value.fromAddress(token),
+        ethereum.Value.fromUnsignedBigInt(tokenId)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getSingleTokenBalance1(
+    token: Address,
+    tokenId: BigInt
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getSingleTokenBalance",
+      "getSingleTokenBalance(address,uint256):(uint256)",
+      [
+        ethereum.Value.fromAddress(token),
+        ethereum.Value.fromUnsignedBigInt(tokenId)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -1055,6 +1125,25 @@ export class OpenFormat extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
+  payee(index: BigInt): Address {
+    let result = super.call("payee", "payee(uint256):(address)", [
+      ethereum.Value.fromUnsignedBigInt(index)
+    ]);
+
+    return result[0].toAddress();
+  }
+
+  try_payee(index: BigInt): ethereum.CallResult<Address> {
+    let result = super.tryCall("payee", "payee(uint256):(address)", [
+      ethereum.Value.fromUnsignedBigInt(index)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   primaryCommissionPct(): BigInt {
     let result = super.call(
       "primaryCommissionPct",
@@ -1071,6 +1160,47 @@ export class OpenFormat extends ethereum.SmartContract {
       "primaryCommissionPct():(uint256)",
       []
     );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  released(token: Address, account: Address): BigInt {
+    let result = super.call("released", "released(address,address):(uint256)", [
+      ethereum.Value.fromAddress(token),
+      ethereum.Value.fromAddress(account)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_released(token: Address, account: Address): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "released",
+      "released(address,address):(uint256)",
+      [ethereum.Value.fromAddress(token), ethereum.Value.fromAddress(account)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  released1(account: Address): BigInt {
+    let result = super.call("released", "released(address):(uint256)", [
+      ethereum.Value.fromAddress(account)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_released1(account: Address): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("released", "released(address):(uint256)", [
+      ethereum.Value.fromAddress(account)
+    ]);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -1134,6 +1264,48 @@ export class OpenFormat extends ethereum.SmartContract {
       "secondaryCommissionPct():(uint256)",
       []
     );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  shareIncomeWithHolders(): boolean {
+    let result = super.call(
+      "shareIncomeWithHolders",
+      "shareIncomeWithHolders():(bool)",
+      []
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_shareIncomeWithHolders(): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "shareIncomeWithHolders",
+      "shareIncomeWithHolders():(bool)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  shares(account: Address): BigInt {
+    let result = super.call("shares", "shares(address):(uint256)", [
+      ethereum.Value.fromAddress(account)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_shares(account: Address): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("shares", "shares(address):(uint256)", [
+      ethereum.Value.fromAddress(account)
+    ]);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -1251,6 +1423,94 @@ export class OpenFormat extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toString());
   }
 
+  totalDepositedAmount(): BigInt {
+    let result = super.call(
+      "totalDepositedAmount",
+      "totalDepositedAmount():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_totalDepositedAmount(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "totalDepositedAmount",
+      "totalDepositedAmount():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  totalDepositedReleased(): BigInt {
+    let result = super.call(
+      "totalDepositedReleased",
+      "totalDepositedReleased():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_totalDepositedReleased(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "totalDepositedReleased",
+      "totalDepositedReleased():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  totalReleased(token: Address): BigInt {
+    let result = super.call(
+      "totalReleased",
+      "totalReleased(address):(uint256)",
+      [ethereum.Value.fromAddress(token)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_totalReleased(token: Address): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "totalReleased",
+      "totalReleased(address):(uint256)",
+      [ethereum.Value.fromAddress(token)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  totalReleased1(): BigInt {
+    let result = super.call("totalReleased", "totalReleased():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_totalReleased1(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "totalReleased",
+      "totalReleased():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   totalSupply(): BigInt {
     let result = super.call("totalSupply", "totalSupply():(uint256)", []);
 
@@ -1330,7 +1590,7 @@ export class AllocateSharesCall__Inputs {
     this._call = call;
   }
 
-  get accounts_(): Array<Address> {
+  get accounts(): Array<Address> {
     return this._call.inputValues[0].value.toAddressArray();
   }
 
@@ -1483,32 +1743,62 @@ export class Buy1Call__Outputs {
   }
 }
 
-export class CalculateRevSharesCall extends ethereum.Call {
-  get inputs(): CalculateRevSharesCall__Inputs {
-    return new CalculateRevSharesCall__Inputs(this);
+export class DepositCall extends ethereum.Call {
+  get inputs(): DepositCall__Inputs {
+    return new DepositCall__Inputs(this);
   }
 
-  get outputs(): CalculateRevSharesCall__Outputs {
-    return new CalculateRevSharesCall__Outputs(this);
+  get outputs(): DepositCall__Outputs {
+    return new DepositCall__Outputs(this);
   }
 }
 
-export class CalculateRevSharesCall__Inputs {
-  _call: CalculateRevSharesCall;
+export class DepositCall__Inputs {
+  _call: DepositCall;
 
-  constructor(call: CalculateRevSharesCall) {
+  constructor(call: DepositCall) {
     this._call = call;
   }
 
-  get excludedFromSplit(): boolean {
-    return this._call.inputValues[0].value.toBoolean();
+  get token(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
   }
 }
 
-export class CalculateRevSharesCall__Outputs {
-  _call: CalculateRevSharesCall;
+export class DepositCall__Outputs {
+  _call: DepositCall;
 
-  constructor(call: CalculateRevSharesCall) {
+  constructor(call: DepositCall) {
+    this._call = call;
+  }
+}
+
+export class Deposit1Call extends ethereum.Call {
+  get inputs(): Deposit1Call__Inputs {
+    return new Deposit1Call__Inputs(this);
+  }
+
+  get outputs(): Deposit1Call__Outputs {
+    return new Deposit1Call__Outputs(this);
+  }
+}
+
+export class Deposit1Call__Inputs {
+  _call: Deposit1Call;
+
+  constructor(call: Deposit1Call) {
+    this._call = call;
+  }
+}
+
+export class Deposit1Call__Outputs {
+  _call: Deposit1Call;
+
+  constructor(call: Deposit1Call) {
     this._call = call;
   }
 }
@@ -1574,6 +1864,70 @@ export class Mint1Call__Outputs {
 
   get newTokenId(): BigInt {
     return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
+export class ReleaseCall extends ethereum.Call {
+  get inputs(): ReleaseCall__Inputs {
+    return new ReleaseCall__Inputs(this);
+  }
+
+  get outputs(): ReleaseCall__Outputs {
+    return new ReleaseCall__Outputs(this);
+  }
+}
+
+export class ReleaseCall__Inputs {
+  _call: ReleaseCall;
+
+  constructor(call: ReleaseCall) {
+    this._call = call;
+  }
+
+  get account(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class ReleaseCall__Outputs {
+  _call: ReleaseCall;
+
+  constructor(call: ReleaseCall) {
+    this._call = call;
+  }
+}
+
+export class Release1Call extends ethereum.Call {
+  get inputs(): Release1Call__Inputs {
+    return new Release1Call__Inputs(this);
+  }
+
+  get outputs(): Release1Call__Outputs {
+    return new Release1Call__Outputs(this);
+  }
+}
+
+export class Release1Call__Inputs {
+  _call: Release1Call;
+
+  constructor(call: Release1Call) {
+    this._call = call;
+  }
+
+  get token(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get account(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class Release1Call__Outputs {
+  _call: Release1Call;
+
+  constructor(call: Release1Call) {
+    this._call = call;
   }
 }
 
@@ -1717,6 +2071,40 @@ export class SetApprovalForAllCall__Outputs {
   }
 }
 
+export class SetApprovedDepositExtensionCall extends ethereum.Call {
+  get inputs(): SetApprovedDepositExtensionCall__Inputs {
+    return new SetApprovedDepositExtensionCall__Inputs(this);
+  }
+
+  get outputs(): SetApprovedDepositExtensionCall__Outputs {
+    return new SetApprovedDepositExtensionCall__Outputs(this);
+  }
+}
+
+export class SetApprovedDepositExtensionCall__Inputs {
+  _call: SetApprovedDepositExtensionCall;
+
+  constructor(call: SetApprovedDepositExtensionCall) {
+    this._call = call;
+  }
+
+  get contractAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get holderPct(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+}
+
+export class SetApprovedDepositExtensionCall__Outputs {
+  _call: SetApprovedDepositExtensionCall;
+
+  constructor(call: SetApprovedDepositExtensionCall) {
+    this._call = call;
+  }
+}
+
 export class SetApprovedMintingExtensionCall extends ethereum.Call {
   get inputs(): SetApprovedMintingExtensionCall__Inputs {
     return new SetApprovedMintingExtensionCall__Inputs(this);
@@ -1743,48 +2131,6 @@ export class SetApprovedMintingExtensionCall__Outputs {
   _call: SetApprovedMintingExtensionCall;
 
   constructor(call: SetApprovedMintingExtensionCall) {
-    this._call = call;
-  }
-}
-
-export class SetApprovedRevShareExtensionCall extends ethereum.Call {
-  get inputs(): SetApprovedRevShareExtensionCall__Inputs {
-    return new SetApprovedRevShareExtensionCall__Inputs(this);
-  }
-
-  get outputs(): SetApprovedRevShareExtensionCall__Outputs {
-    return new SetApprovedRevShareExtensionCall__Outputs(this);
-  }
-}
-
-export class SetApprovedRevShareExtensionCall__Inputs {
-  _call: SetApprovedRevShareExtensionCall;
-
-  constructor(call: SetApprovedRevShareExtensionCall) {
-    this._call = call;
-  }
-
-  get contractAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get collaborators(): Array<Address> {
-    return this._call.inputValues[1].value.toAddressArray();
-  }
-
-  get shares(): Array<BigInt> {
-    return this._call.inputValues[2].value.toBigIntArray();
-  }
-
-  get holderPct(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-}
-
-export class SetApprovedRevShareExtensionCall__Outputs {
-  _call: SetApprovedRevShareExtensionCall;
-
-  constructor(call: SetApprovedRevShareExtensionCall) {
     this._call = call;
   }
 }
@@ -1939,6 +2285,36 @@ export class SetSecondaryCommissionPctCall__Outputs {
   _call: SetSecondaryCommissionPctCall;
 
   constructor(call: SetSecondaryCommissionPctCall) {
+    this._call = call;
+  }
+}
+
+export class SetShareIncomeWithHoldersCall extends ethereum.Call {
+  get inputs(): SetShareIncomeWithHoldersCall__Inputs {
+    return new SetShareIncomeWithHoldersCall__Inputs(this);
+  }
+
+  get outputs(): SetShareIncomeWithHoldersCall__Outputs {
+    return new SetShareIncomeWithHoldersCall__Outputs(this);
+  }
+}
+
+export class SetShareIncomeWithHoldersCall__Inputs {
+  _call: SetShareIncomeWithHoldersCall;
+
+  constructor(call: SetShareIncomeWithHoldersCall) {
+    this._call = call;
+  }
+
+  get state(): boolean {
+    return this._call.inputValues[0].value.toBoolean();
+  }
+}
+
+export class SetShareIncomeWithHoldersCall__Outputs {
+  _call: SetShareIncomeWithHoldersCall;
+
+  constructor(call: SetShareIncomeWithHoldersCall) {
     this._call = call;
   }
 }
@@ -2122,8 +2498,12 @@ export class Withdraw1Call__Inputs {
     this._call = call;
   }
 
-  get collaborator(): Address {
+  get token(): Address {
     return this._call.inputValues[0].value.toAddress();
+  }
+
+  get tokenId(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
   }
 }
 
