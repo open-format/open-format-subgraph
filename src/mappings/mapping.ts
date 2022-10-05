@@ -10,7 +10,6 @@ import {
   ApprovedDepositExtensionSet,
   CommissionPaid,
   Created,
-  ERC20PaymentReleased,
   ERC20TokenBalanceWithdrawn,
   ERC20TotalDepositedAmountUpdated,
   MaxSupplySet,
@@ -19,10 +18,7 @@ import {
   OpenFormat,
   OwnershipTransferred,
   PausedStateSet,
-  PayeeAdded,
-  PayeeRemoved,
   PaymentReceived,
-  PaymentReleased,
   PrimaryCommissionSet,
   RoyaltiesSet,
   RoyaltyPaid,
@@ -101,7 +97,7 @@ export function handleApprovedDepositExtensionSet(
   if (token) {
     if (!extensionData) {
       extensionData = new ExtensionData(extensionID);
-      token.ExtensionData = extensionID;
+      token.extensionData = extensionID;
     }
     extensionData.approvedDepositExtension = event.params.contractAddress.toHex();
     extensionData.save();
@@ -136,7 +132,6 @@ export function handleCreated(event: Created): void {
   );
 
   if (jsonData != null) {
-    let attributes = new Array<string>();
     let properties = new Array<string>();
     const parsedMetadata = jsonData.inner.toObject();
 
@@ -179,38 +174,49 @@ export function handleCreated(event: Created): void {
      * Handle Attributes
      */
 
-    let attributesJSON = parsedMetadata.get("attributes");
+    // let attributesJSON = parsedMetadata.get("attributes");
 
-    if (attributesJSON) {
-      let attrArr = attributesJSON.toArray();
-      for (let i = 0; i < attrArr.length; i++) {
-        const attrMap = attrArr[i].toObject();
+    // if (
+    //   attributesJSON &&
+    //   attributesJSON.kind === JSONValueKind.ARRAY
+    // ) {
+    //   let attrArr = attributesJSON.toArray();
 
-        let attrName = "";
-        let attrValue = "";
+    //   if (attrArr.length > 0) {
+    //     let attributes = new Array<string>();
+    //     for (let i = 0; i < attrArr.length; i++) {
+    //       const attrMap = attrArr[i].toObject();
 
-        if (attrMap.isSet("trait_type")) {
-          attrName = attrMap.get("trait_type")!.toString();
-          attrValue = attrMap.get("value")!.toString();
+    //       let attrName = "";
+    //       let attrValue = "";
 
-          let attribute = Attribute.load(
-            event.address.toHex() + "-" + attrName + "-" + attrValue
-          );
+    //       if (attrMap.isSet("trait_type") && attrMap.isSet("value")) {
+    //         attrName = attrMap.get("trait_type")!.toString();
+    //         attrValue = attrMap.get("value")!.toString();
 
-          if (!attribute) {
-            attribute = new Attribute(
-              event.address.toHex() + "-" + attrName + "-" + attrValue
-            );
-            attribute.trait_type = attrName;
-            attribute.value = attrValue;
-            attribute.save();
-            attributes.push(attribute.id);
-          }
-        }
-      }
-    }
+    //         let attribute = Attribute.load(
+    //           event.address.toHex() + "-" + attrName + "-" + attrValue
+    //         );
+
+    //         if (!attribute) {
+    //           attribute = new Attribute(
+    //             event.address.toHex() +
+    //               "-" +
+    //               attrName +
+    //               "-" +
+    //               attrValue
+    //           );
+    //           attribute.trait_type = attrName;
+    //           attribute.value = attrValue;
+    //           attribute.save();
+    //           attributes.push(attribute.id);
+    //         }
+    //       }
+    //     }
+    //     token.attributes = attributes;
+    //   }
+    // }
     token.properties = properties;
-    token.attributes = attributes;
   }
 
   /*
@@ -227,10 +233,6 @@ export function handleCreated(event: Created): void {
   token.save();
   saleData.save();
 }
-
-export function handleERC20PaymentReleased(
-  event: ERC20PaymentReleased
-): void {}
 
 export function handleERC20TokenBalanceWithdrawn(
   event: ERC20TokenBalanceWithdrawn
@@ -279,64 +281,49 @@ export function handleOwnershipTransferred(
 
 export function handlePausedStateSet(event: PausedStateSet): void {}
 
-export function handlePayeeAdded(event: PayeeAdded): void {
-  let stakeholder = new Stakeholder(
-    event.params.account.toHex() + "-" + event.address.toHex()
-  );
-  stakeholder.share = event.params.shares;
-  stakeholder.token = event.address.toHex();
-  stakeholder.save();
-}
-
 export function handleSharesAllocated(event: SharesAllocated): void {
-  let contract = OpenFormat.bind(event.address);
-
-  let stakeholderFrom = Stakeholder.load(
-    event.params.from.toHex() + "-" + event.address.toHex()
-  );
-
-  let stakeholderTo = Stakeholder.load(
-    event.params.to.toHex() + "-" + event.address.toHex()
-  );
-
-  if (stakeholderFrom && stakeholderTo) {
-    const fromShares = contract.shares(event.params.from);
-    const toShares = contract.shares(event.params.to);
-
-    stakeholderFrom.share = fromShares;
-    stakeholderTo.share = toShares;
-
-    stakeholderFrom.save();
-    stakeholderTo.save();
-  }
+  // let contract = OpenFormat.bind(event.address);
+  // let stakeholderFrom = Stakeholder.load(
+  //   event.params.from.toHex() + "-" + event.address.toHex()
+  // );
+  // let stakeholderTo = Stakeholder.load(
+  //   event.params.to.toHex() + "-" + event.address.toHex()
+  // );
+  // if (stakeholderFrom && stakeholderTo) {
+  //   contract.
+  //   const fromShares = contract.shares(event.params.from);
+  //   const toShares = contract.shares(event.params.to);
+  //   stakeholderFrom.share = fromShares;
+  //   stakeholderTo.share = toShares;
+  //   stakeholderFrom.save();
+  //   stakeholderTo.save();
+  // }
 }
-
-export function handlePayeeRemoved(event: PayeeRemoved): void {}
 
 export function handlePaymentReceived(event: PaymentReceived): void {}
 
-export function handlePaymentReleased(event: PaymentReleased): void {
-  let token = Token.load(event.address.toHex());
-  let saleData = SaleData.load(event.address.toHex());
-  let contract = OpenFormat.bind(event.address);
-  let payout = new Payout(
-    event.address.toHex() + "-" + event.params.to.toHex()
-  );
+// export function handlePaymentReleased(event: PaymentReleased): void {
+//   let token = Token.load(event.address.toHex());
+//   let saleData = SaleData.load(event.address.toHex());
+//   let contract = OpenFormat.bind(event.address);
+//   let payout = new Payout(
+//     event.address.toHex() + "-" + event.params.to.toHex()
+//   );
 
-  if (token && saleData) {
-    payout.account = event.params.to.toHex();
-    payout.amount = event.params.amount;
-    payout.token = event.address.toHex();
-    payout.createdAt = event.block.timestamp;
-    payout.transactionHash = event.transaction.hash;
-    payout.save();
+//   if (token && saleData) {
+//     payout.account = event.params.to.toHex();
+//     payout.amount = event.params.amount;
+//     payout.token = event.address.toHex();
+//     payout.createdAt = event.block.timestamp;
+//     payout.transactionHash = event.transaction.hash;
+//     payout.save();
 
-    saleData.totalReleased = contract
-      .totalReleased1()
-      .plus(event.params.amount);
-    saleData.save();
-  }
-}
+//     saleData.totalReleased = contract
+//       .totalReleased1()
+//       .plus(event.params.amount);
+//     saleData.save();
+//   }
+// }
 
 export function handlePrimaryCommissionSet(
   event: PrimaryCommissionSet
