@@ -14,10 +14,6 @@ jobs:
           node-version: 14
       - name: Install
         run: yarn --frozen-lockfile
-      - name: Codegen
-        run: yarn codegen
-      - name: Build
-        run: yarn build
       - uses: gtaschuk/graph-deploy@v0.1.0
         with:
           graph_access_token: ${{secrets.GRAPH_ACCESS_TOKEN}}
