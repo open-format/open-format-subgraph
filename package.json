@@ -7,7 +7,7 @@
     "gen:mumbai": "graph codegen subgraph.mumbai.yaml",
     "gen:polygon": "graph codegen subgraph.polygon.yaml",
     "gen:local": "graph codegen subgraph.local.yaml",
-    "build": "graph build",
+    "build:mumbai": "graph build  subgraph.mumbai.yaml",
     "create-local": "graph create --node http://localhost:8020/ simpleweb/open-format",
     "remove-local": "graph remove --node http://localhost:8020/ simpleweb/open-format",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 simpleweb/open-format subgraph.local.yaml"
