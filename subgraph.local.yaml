@@ -4,10 +4,9 @@ schema:
 dataSources:
   - kind: ethereum
     name: OpenFormat
-    network: mumbai
+    network: mainnet
     source:
       abi: OpenFormat
-      startBlock: 26831876
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

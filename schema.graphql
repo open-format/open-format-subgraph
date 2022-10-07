@@ -4,12 +4,13 @@ type Token @entity {
   factory_id: String
   release_type: String
   saleData: SaleData
-  ExtensionData: ExtensionData
+  extensionData: ExtensionData
   attributes: [Attribute!]
   creator: Creator!
   stakeholders: [Stakeholder!] @derivedFrom(field: "token")
   payouts: [Payout!] @derivedFrom(field: "token")
   owners: [OwnerToken!] @derivedFrom(field: "token")
+  holdings: [Holding!] @derivedFrom(field: "token")
   symbol: String!
   createdAt: BigInt!
 }
@@ -22,6 +23,7 @@ type Creator @entity {
 type Stakeholder @entity {
   id: ID!
   share: BigInt!
+  address: String!
   token: Token!
   balance: BigInt!
 }
@@ -37,6 +39,7 @@ type Payout @entity {
 
 type Owner @entity {
   id: ID!
+  account: String!
   tokens: [OwnerToken!]! @derivedFrom(field: "owner")
 }
 
@@ -75,5 +78,22 @@ type SaleData @entity {
 type ExtensionData @entity {
   id: ID!
   approvedDepositExtension: String
-  approvedRoyaltyExtension: String
+  approvedMintingExtension: String
+}
+
+type Holding @entity {
+  id: ID!
+  token: Token!
+  tokenId: BigInt!
+  value: BigInt!
+  owner: String!
+}
+
+type Transaction @entity {
+  id: ID!
+  to: Bytes
+  from: String!
+  token: Token!
+  tokenId: BigInt!
+  timestamp: BigInt!
 }

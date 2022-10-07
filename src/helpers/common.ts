@@ -1,12 +1,12 @@
 import {
   BigInt,
   Bytes,
-  TypedMap,
-  JSONValue,
-  Wrapped,
   ipfs,
   json,
+  JSONValue,
   log,
+  TypedMap,
+  Wrapped,
 } from "@graphprotocol/graph-ts";
 
 export const ONE = BigInt.fromI32(1);
@@ -24,7 +24,7 @@ export function getStringValue(
 export function getArrayValue(
   obj: TypedMap<string, JSONValue>,
   key: string
-): Array<any> {
+): Array<JSONValue> {
   if (obj.isSet(key) && !obj.get(key)!.isNull()) {
     return obj.get(key)!.toArray();
   }
@@ -34,6 +34,9 @@ export function getArrayValue(
 export function parseJsonFromIpfs(
   jsonUri: string
 ): Wrapped<JSONValue> | null {
+  if (!jsonUri.startsWith("ipfs://")) {
+    return null;
+  }
   const ipfsHashParts = jsonUri.split("//");
   const ipfsHash = ipfsHashParts[1];
 
