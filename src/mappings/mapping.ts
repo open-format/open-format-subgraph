@@ -140,10 +140,7 @@ export function handleCreated(event: Created): void {
     }
 
     if (getStringValue(parsedMetadata, "factory_id") != null) {
-      token.release_type = getStringValue(
-        parsedMetadata,
-        "release_type"
-      );
+      token.release_type = getStringValue(parsedMetadata, "release_type");
     }
     /*
      * Handle Metadata
@@ -158,9 +155,7 @@ export function handleCreated(event: Created): void {
           );
 
           if (!property) {
-            property = new Property(
-              entry.key + "-" + entry.value.toString()
-            );
+            property = new Property(entry.key + "-" + entry.value.toString());
             property.key = entry.key;
             property.value = entry.value.toString();
           }
@@ -174,48 +169,41 @@ export function handleCreated(event: Created): void {
      * Handle Attributes
      */
 
-    // let attributesJSON = parsedMetadata.get("attributes");
+    let attributesJSON = parsedMetadata.get("attributes");
 
-    // if (
-    //   attributesJSON &&
-    //   attributesJSON.kind === JSONValueKind.ARRAY
-    // ) {
-    //   let attrArr = attributesJSON.toArray();
+    if (attributesJSON && attributesJSON.kind === JSONValueKind.ARRAY) {
+      let attrArr = attributesJSON.toArray();
 
-    //   if (attrArr.length > 0) {
-    //     let attributes = new Array<string>();
-    //     for (let i = 0; i < attrArr.length; i++) {
-    //       const attrMap = attrArr[i].toObject();
+      if (attrArr.length > 0) {
+        let attributes = new Array<string>();
+        for (let i = 0; i < attrArr.length; i++) {
+          const attrMap = attrArr[i].toObject();
 
-    //       let attrName = "";
-    //       let attrValue = "";
+          let attrName = "";
+          let attrValue = "";
 
-    //       if (attrMap.isSet("trait_type") && attrMap.isSet("value")) {
-    //         attrName = attrMap.get("trait_type")!.toString();
-    //         attrValue = attrMap.get("value")!.toString();
+          if (attrMap.isSet("trait_type") && attrMap.isSet("value")) {
+            attrName = attrMap.get("trait_type")!.toString();
+            attrValue = attrMap.get("value")!.toString();
 
-    //         let attribute = Attribute.load(
-    //           event.address.toHex() + "-" + attrName + "-" + attrValue
-    //         );
+            let attribute = Attribute.load(
+              event.address.toHex() + "-" + attrName + "-" + attrValue
+            );
 
-    //         if (!attribute) {
-    //           attribute = new Attribute(
-    //             event.address.toHex() +
-    //               "-" +
-    //               attrName +
-    //               "-" +
-    //               attrValue
-    //           );
-    //           attribute.trait_type = attrName;
-    //           attribute.value = attrValue;
-    //           attribute.save();
-    //           attributes.push(attribute.id);
-    //         }
-    //       }
-    //     }
-    //     token.attributes = attributes;
-    //   }
-    // }
+            if (!attribute) {
+              attribute = new Attribute(
+                event.address.toHex() + "-" + attrName + "-" + attrValue
+              );
+              attribute.trait_type = attrName;
+              attribute.value = attrValue;
+              attribute.save();
+              attributes.push(attribute.id);
+            }
+          }
+        }
+        token.attributes = attributes;
+      }
+    }
     token.properties = properties;
   }
 
