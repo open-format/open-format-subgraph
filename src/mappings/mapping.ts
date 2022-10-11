@@ -182,7 +182,12 @@ export function handleCreated(event: Created): void {
           let attrName = "";
           let attrValue = "";
 
-          if (attrMap.isSet("trait_type") && attrMap.isSet("value")) {
+          if (
+            attrMap.isSet("trait_type") &&
+            attrMap.isSet("value") &&
+            attrMap.get("trait_type")!.kind === JSONValueKind.STRING &&
+            attrMap.get("value")!.kind === JSONValueKind.STRING
+          ) {
             attrName = attrMap.get("trait_type")!.toString();
             attrValue = attrMap.get("value")!.toString();
 
