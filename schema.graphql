@@ -67,12 +67,11 @@ type SaleData @entity {
   maxSupply: BigInt!
   totalEarnings: BigInt!
   totalSold: BigInt!
-  totalReleased: BigInt!
+  totalReleased: BigInt
   salePrice: BigInt!
-  createdAt: BigInt!
-  royaltiesPercentage: BigInt!
-  primaryCommission: BigInt!
-  secondaryCommission: BigInt!
+  royaltiesPercentage: BigInt
+  primaryCommission: BigInt
+  secondaryCommission: BigInt
 }
 
 type ExtensionData @entity {
