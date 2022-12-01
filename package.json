@@ -3,17 +3,17 @@
   "license": "UNLICENSED",
   "scripts": {
     "deploy:mumbai": "graph deploy --node https://api.thegraph.com/deploy/ simpleweb/open-format subgraph.mumbai.yaml",
-    "deploy:polygon": "graph deploy --node https://api.thegraph.com/deploy/ simpleweb/polygon-open-format subgraph.polygon.yaml",
+    "deploy:polygon": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://ipfs.io/ipfs/ simpleweb/polygon-open-format subgraph.polygon.yaml",
     "gen:mumbai": "graph codegen subgraph.mumbai.yaml",
     "gen:polygon": "graph codegen subgraph.polygon.yaml",
     "gen:local": "graph codegen subgraph.local.yaml",
-    "build:mumbai": "graph build  subgraph.mumbai.yaml",
+    "build:mumbai": "graph build subgraph.mumbai.yaml",
     "create-local": "graph create --node http://localhost:8020/ simpleweb/open-format",
     "remove-local": "graph remove --node http://localhost:8020/ simpleweb/open-format",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 simpleweb/open-format subgraph.local.yaml"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.25.1",
-    "@graphprotocol/graph-ts": "0.24.1"
+    "@graphprotocol/graph-cli": "^0.36.1",
+    "@graphprotocol/graph-ts": "^0.29.0"
   }
 }
