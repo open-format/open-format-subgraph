@@ -15,10 +15,6 @@ export class Token extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("creator", Value.fromString(""));
-    this.set("symbol", Value.fromString(""));
-    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -27,8 +23,7 @@ export class Token extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Token entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type Token must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("Token", id.toString(), this);
     }
@@ -257,8 +252,7 @@ export class Creator extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Creator entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type Creator must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("Creator", id.toString(), this);
     }
@@ -291,11 +285,6 @@ export class Stakeholder extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("share", Value.fromBigInt(BigInt.zero()));
-    this.set("address", Value.fromString(""));
-    this.set("token", Value.fromString(""));
-    this.set("balance", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -304,8 +293,7 @@ export class Stakeholder extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Stakeholder entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type Stakeholder must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("Stakeholder", id.toString(), this);
     }
@@ -365,12 +353,6 @@ export class Payout extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("account", Value.fromString(""));
-    this.set("amount", Value.fromBigInt(BigInt.zero()));
-    this.set("token", Value.fromString(""));
-    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -379,8 +361,7 @@ export class Payout extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Payout entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type Payout must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("Payout", id.toString(), this);
     }
@@ -449,8 +430,6 @@ export class Owner extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("account", Value.fromString(""));
   }
 
   save(): void {
@@ -459,8 +438,7 @@ export class Owner extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Owner entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type Owner must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("Owner", id.toString(), this);
     }
@@ -502,9 +480,6 @@ export class OwnerToken extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("owner", Value.fromString(""));
-    this.set("token", Value.fromString(""));
   }
 
   save(): void {
@@ -513,8 +488,7 @@ export class OwnerToken extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save OwnerToken entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type OwnerToken must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("OwnerToken", id.toString(), this);
     }
@@ -556,9 +530,6 @@ export class Attribute extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("trait_type", Value.fromString(""));
-    this.set("value", Value.fromString(""));
   }
 
   save(): void {
@@ -567,8 +538,7 @@ export class Attribute extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Attribute entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type Attribute must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("Attribute", id.toString(), this);
     }
@@ -610,9 +580,6 @@ export class Property extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("key", Value.fromString(""));
-    this.set("value", Value.fromString(""));
   }
 
   save(): void {
@@ -621,8 +588,7 @@ export class Property extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Property entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type Property must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("Property", id.toString(), this);
     }
@@ -673,16 +639,6 @@ export class SaleData extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("maxSupply", Value.fromBigInt(BigInt.zero()));
-    this.set("totalEarnings", Value.fromBigInt(BigInt.zero()));
-    this.set("totalSold", Value.fromBigInt(BigInt.zero()));
-    this.set("totalReleased", Value.fromBigInt(BigInt.zero()));
-    this.set("salePrice", Value.fromBigInt(BigInt.zero()));
-    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
-    this.set("royaltiesPercentage", Value.fromBigInt(BigInt.zero()));
-    this.set("primaryCommission", Value.fromBigInt(BigInt.zero()));
-    this.set("secondaryCommission", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -691,8 +647,7 @@ export class SaleData extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save SaleData entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type SaleData must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("SaleData", id.toString(), this);
     }
@@ -738,13 +693,21 @@ export class SaleData extends Entity {
     this.set("totalSold", Value.fromBigInt(value));
   }
 
-  get totalReleased(): BigInt {
+  get totalReleased(): BigInt | null {
     let value = this.get("totalReleased");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set totalReleased(value: BigInt) {
-    this.set("totalReleased", Value.fromBigInt(value));
+  set totalReleased(value: BigInt | null) {
+    if (!value) {
+      this.unset("totalReleased");
+    } else {
+      this.set("totalReleased", Value.fromBigInt(<BigInt>value));
+    }
   }
 
   get salePrice(): BigInt {
@@ -756,40 +719,55 @@ export class SaleData extends Entity {
     this.set("salePrice", Value.fromBigInt(value));
   }
 
-  get createdAt(): BigInt {
-    let value = this.get("createdAt");
-    return value!.toBigInt();
-  }
-
-  set createdAt(value: BigInt) {
-    this.set("createdAt", Value.fromBigInt(value));
-  }
-
-  get royaltiesPercentage(): BigInt {
+  get royaltiesPercentage(): BigInt | null {
     let value = this.get("royaltiesPercentage");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set royaltiesPercentage(value: BigInt) {
-    this.set("royaltiesPercentage", Value.fromBigInt(value));
+  set royaltiesPercentage(value: BigInt | null) {
+    if (!value) {
+      this.unset("royaltiesPercentage");
+    } else {
+      this.set("royaltiesPercentage", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get primaryCommission(): BigInt {
+  get primaryCommission(): BigInt | null {
     let value = this.get("primaryCommission");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set primaryCommission(value: BigInt) {
-    this.set("primaryCommission", Value.fromBigInt(value));
+  set primaryCommission(value: BigInt | null) {
+    if (!value) {
+      this.unset("primaryCommission");
+    } else {
+      this.set("primaryCommission", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get secondaryCommission(): BigInt {
+  get secondaryCommission(): BigInt | null {
     let value = this.get("secondaryCommission");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set secondaryCommission(value: BigInt) {
-    this.set("secondaryCommission", Value.fromBigInt(value));
+  set secondaryCommission(value: BigInt | null) {
+    if (!value) {
+      this.unset("secondaryCommission");
+    } else {
+      this.set("secondaryCommission", Value.fromBigInt(<BigInt>value));
+    }
   }
 }
 
@@ -805,8 +783,7 @@ export class ExtensionData extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save ExtensionData entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type ExtensionData must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("ExtensionData", id.toString(), this);
     }
@@ -864,11 +841,6 @@ export class Holding extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("token", Value.fromString(""));
-    this.set("tokenId", Value.fromBigInt(BigInt.zero()));
-    this.set("value", Value.fromBigInt(BigInt.zero()));
-    this.set("owner", Value.fromString(""));
   }
 
   save(): void {
@@ -877,8 +849,7 @@ export class Holding extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Holding entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type Holding must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("Holding", id.toString(), this);
     }
@@ -938,11 +909,6 @@ export class Transaction extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("from", Value.fromString(""));
-    this.set("token", Value.fromString(""));
-    this.set("tokenId", Value.fromBigInt(BigInt.zero()));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -951,8 +917,7 @@ export class Transaction extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Transaction entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type Transaction must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("Transaction", id.toString(), this);
     }

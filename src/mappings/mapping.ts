@@ -1,9 +1,11 @@
 // Contract V1.1.0 /abis/OpenFormat.json
 import {
-  JSONValue,
-  JSONValueKind,
+  BigInt,
+  Bytes,
+  dataSource,
+  json,
+  log,
   store,
-  Wrapped,
 } from "@graphprotocol/graph-ts";
 import {
   Approval,
@@ -31,18 +33,16 @@ import {
   Transfer,
 } from "../../generated/OpenFormat/OpenFormat";
 import {
-  Attribute,
   Creator,
   ExtensionData,
   Owner,
   OwnerToken,
-  Payout,
   Property,
   SaleData,
-  Stakeholder,
   Token,
 } from "../../generated/schema";
-import { getStringValue, parseJsonFromIpfs } from "../helpers/common";
+
+import { TokenMetadata as TokenMetadataTemplate } from "../../generated/templates";
 
 export function handleApproval(event: Approval): void {
   //
@@ -110,6 +110,9 @@ export function handleCommissionPaid(event: CommissionPaid): void {}
 export function handleCreated(event: Created): void {
   let token = new Token(event.address.toHex());
   let saleData = new SaleData(event.address.toHex());
+  let CID = event.params.metadataURI.split("ipfs://")[1];
+
+  TokenMetadataTemplate.create(CID);
 
   /*
    * Handle Contract Data
@@ -123,88 +126,9 @@ export function handleCreated(event: Created): void {
    */
   if (event.params.mintingPrice) {
     saleData.salePrice = event.params.mintingPrice;
-    saleData.createdAt = event.block.timestamp;
     saleData.maxSupply = event.params.maxSupply;
-  }
-
-  const jsonData: Wrapped<JSONValue> | null = parseJsonFromIpfs(
-    event.params.metadataURI
-  );
-
-  if (jsonData != null) {
-    let properties = new Array<string>();
-    const parsedMetadata = jsonData.inner.toObject();
-
-    if (getStringValue(parsedMetadata, "factory_id") != null) {
-      token.factory_id = getStringValue(parsedMetadata, "factory_id");
-    }
-
-    if (getStringValue(parsedMetadata, "factory_id") != null) {
-      token.release_type = getStringValue(parsedMetadata, "release_type");
-    }
-    /*
-     * Handle Metadata
-     */
-    for (let i = 0; i < parsedMetadata.entries.length; i++) {
-      const entry = parsedMetadata.entries[i];
-
-      if (entry.key !== "attributes") {
-        if (entry.value.kind == JSONValueKind.STRING) {
-          let property = Property.load(
-            entry.key + "-" + entry.value.toString()
-          );
-
-          if (!property) {
-            property = new Property(entry.key + "-" + entry.value.toString());
-            property.key = entry.key;
-            property.value = entry.value.toString();
-          }
-          property.save();
-          properties.push(entry.key + "-" + entry.value.toString());
-        }
-      }
-    }
-
-    /*
-     * Handle Attributes
-     */
-
-    let attributesJSON = parsedMetadata.get("attributes");
-
-    if (attributesJSON && attributesJSON.kind === JSONValueKind.ARRAY) {
-      let attrArr = attributesJSON.toArray();
-
-      if (attrArr.length > 0) {
-        let attributes = new Array<string>();
-        for (let i = 0; i < attrArr.length; i++) {
-          const attrMap = attrArr[i].toObject();
-
-          let attrName = "";
-          let attrValue = "";
-
-          if (attrMap.isSet("trait_type") && attrMap.isSet("value")) {
-            attrName = attrMap.get("trait_type")!.toString();
-            attrValue = attrMap.get("value")!.toString();
-
-            let attribute = Attribute.load(
-              event.address.toHex() + "-" + attrName + "-" + attrValue
-            );
-
-            if (!attribute) {
-              attribute = new Attribute(
-                event.address.toHex() + "-" + attrName + "-" + attrValue
-              );
-              attribute.trait_type = attrName;
-              attribute.value = attrValue;
-              attribute.save();
-              attributes.push(attribute.id);
-            }
-          }
-        }
-        token.attributes = attributes;
-      }
-    }
-    token.properties = properties;
+    saleData.totalEarnings = new BigInt(0);
+    saleData.totalSold = new BigInt(0);
   }
 
   /*
@@ -219,7 +143,7 @@ export function handleCreated(event: Created): void {
   token.creator = creator.id;
   creator.save();
   token.save();
-  saleData.save();
+  // saleData.save();
 }
 
 export function handleERC20TokenBalanceWithdrawn(
@@ -414,3 +338,17 @@ export function handleTotalDepositedAmountUpdated(
 ): void {}
 
 export function handleTransfer(event: Transfer): void {}
+
+export function handleMetadata(content: Bytes): void {
+  log.info(">>>>>>>>>>>>>>>>>", ["handleMetadata"]);
+
+  const value = json.fromBytes(content).toObject();
+  const name = value.get("name");
+
+  if (name) {
+    let property = new Property(dataSource.stringParam());
+    property.key = "hi";
+    property.value = "two";
+    property.save();
+  }
+}

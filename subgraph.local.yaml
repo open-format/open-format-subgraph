@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 schema:
   file: ./schema.graphql
 dataSources:
@@ -9,7 +9,7 @@ dataSources:
       abi: OpenFormat
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - ApprovedMintingExtensionSet
@@ -73,3 +73,20 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/mappings/mapping.ts
+templates:
+  - name: TokenMetadata
+    kind: file/ipfs
+    source:
+      abi: OpenFormat
+    mapping:
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/mapping.ts
+      handler: handleMetadata
+      entities:
+        - Property
+      abis:
+        - name: OpenFormat
+          file: ./abis/OpenFormat.json
+features:
+  - ipfsOnEthereumContracts
